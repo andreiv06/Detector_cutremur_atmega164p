@@ -1,15 +1,8 @@
 /*******************************************************
-This program was created by the CodeWizardAVR V4.03 
-Automatic Program Generator
-© Copyright 1998-2024 Pavel Haiduc, HP InfoTech S.R.L.
-http://www.hpinfotech.ro
-
-Project : 
-Version : 
-Date    : 02/05/2025
-Author  : 
-Company : 
-Comments: 
+Project : Tema optionala AMP 2 
+Date    : 11/05/2025
+Author  : Ghinea Valentin-Andrei
+Company : ETTI, 424E
 
 
 Chip type               : ATmega164
@@ -29,6 +22,7 @@ char Q = 0; //stare CLS
 char in;
 char out;
 int timer = 0;//pentru cls
+int timer_inter = 0;//timer pentru led intermitent
 int increment = 0;
 char TAB[8] = {0x7F, 0x6F, 0x53, 0x7F, 0x33, 0x7F, 0x7F, 0x7F};
 void stareInactiva(void);
@@ -44,6 +38,7 @@ interrupt [TIM0_OVF] void timer0_ovf_isr(void)
 // Reinitialize Timer 0 value
 TCNT0=0x3C;
 timer = (timer + 1)%150;
+timer_inter = (timer_inter + 1)%50;
 
 }
 
@@ -270,9 +265,9 @@ void clc(void)
 void alarma(void)  //practic fac ledul de avertizare intermitent  (
 {    
     out = 0x30;
-    if (timer < 75)     // ON ~500 ms
+    if (timer_inter < 25)     
         out |= (1 << 0);
-    else                // OFF ~500 ms
+    else                
         out &= ~(1 << 0);
     S = 3;
 }                 
